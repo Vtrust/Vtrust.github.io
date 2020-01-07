@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/uploads/avatar.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/uploads/avatar.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/uploads/avatar.png">
+  <link rel="mask-icon" href="/uploads/avatar.png" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    hostname: new URL('http://yoursite.com').hostname,
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.7.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    comments: {"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}
+  };
+</script>
+
+  <meta name="description" content="canvas实例 canvas时钟动效时钟">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Canvas学习笔记">
+<meta property="og:url" content="http://yoursite.com/2016/11/21/CanvasLearn/index.html">
+<meta property="og:site_name" content="Vtrust&#39;Blog">
+<meta property="og:description" content="canvas实例 canvas时钟动效时钟">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/2016/11/21/CanvasLearn/CanvasLearn/canvasTime.png">
+<meta property="og:image" content="http://yoursite.com/2016/11/21/CanvasLearn/CanvasLearn/canvasParticle.png">
+<meta property="article:published_time" content="2016-11-21T03:52:51.000Z">
+<meta property="article:modified_time" content="2020-01-07T06:16:04.977Z">
+<meta property="article:author" content="张烙铭">
+<meta property="article:tag" content="canvas">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/2016/11/21/CanvasLearn/CanvasLearn/canvasTime.png">
+
+<link rel="canonical" href="http://yoursite.com/2016/11/21/CanvasLearn/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true
+  };
+</script>
+
+  <title>Canvas学习笔记 | Vtrust'Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Vtrust'Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+
+</nav>
+  <div class="site-search">
+    <div class="popup search-popup">
+    <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocorrect="off" autocapitalize="none"
+           placeholder="搜索..." spellcheck="false"
+           type="text" id="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result"></div>
+
+</div>
+<div class="search-pop-overlay"></div>
+
+  </div>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/11/21/CanvasLearn/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="张烙铭">
+      <meta itemprop="description" content="路漫漫其修远兮,吾将上下而求索。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Vtrust'Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Canvas学习笔记
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2016-11-21 11:52:51" itemprop="dateCreated datePublished" datetime="2016-11-21T11:52:51+08:00">2016-11-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-01-07 14:16:04" itemprop="dateModified" datetime="2020-01-07T14:16:04+08:00">2020-01-07</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/canvas/" itemprop="url" rel="index">
+                    <span itemprop="name">canvas</span>
+                  </a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2016/11/21/CanvasLearn/#comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/11/21/CanvasLearn/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="canvas实例"><a href="#canvas实例" class="headerlink" title="canvas实例"></a>canvas实例</h2><ol>
+<li>canvas时钟<br><a href="https://vtrust.github.io/canvasLearn/timeDemo/index.html" target="_blank" rel="noopener">动效时钟</a><img src="CanvasLearn/canvasTime.png" width="500" />
+<a id="more"></a></li>
+<li>canvas粒子动效<br>以前在网上看到过，学了canvas后觉得可以做便做了出来<br><a href="https://vtrust.github.io/canvasLearn/ParticleDynamicEffect/ParticleDynamicEffect.html" target="_blank" rel="noopener">粒子动效</a><img src="CanvasLearn/canvasParticle.png" width="500" />
+2016-11-26
+
+</li>
+</ol>
+<h2 id="canvas深入学习"><a href="#canvas深入学习" class="headerlink" title="canvas深入学习"></a>canvas深入学习</h2><h3 id="绘图环境获取"><a href="#绘图环境获取" class="headerlink" title="绘图环境获取"></a>绘图环境获取</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var canvas &#x3D; document.getElementById(&#39;canvas&#39;);</span><br><span class="line">var context &#x3D; canvas.getContext(&#39;2d&#39;);</span><br></pre></td></tr></table></figure>
+<p>context即为2d绘图环境</p>
+<h3 id="moveTo-x-y-函数"><a href="#moveTo-x-y-函数" class="headerlink" title="moveTo(x,y)函数"></a>moveTo(x,y)函数</h3><p><code>context.moveTo(100,100);</code>将画笔移动到（100，100）的位置，其中画布的左上角为坐标原点，向右为x正方向，向下为y正方向。</p>
+<h3 id="lineTo-x-y-函数"><a href="#lineTo-x-y-函数" class="headerlink" title="lineTo(x,y)函数"></a>lineTo(x,y)函数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">context.moveTo(100,100);&#x2F;&#x2F;状态</span><br><span class="line">context.lineTo(200,200);&#x2F;&#x2F;状态</span><br><span class="line">context.stroke();&#x2F;&#x2F;绘制动作</span><br></pre></td></tr></table></figure>
+<p>绘制一条从（100，100）到（200，200）的直线。</p>
+<h3 id="绘制折线"><a href="#绘制折线" class="headerlink" title="绘制折线"></a>绘制折线</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">context.moveTo(100,100);</span><br><span class="line">context.lineTo(200,200);</span><br><span class="line">context.lineTo(200,300);</span><br><span class="line">context.stroke();&#x2F;&#x2F;绘制动作</span><br></pre></td></tr></table></figure>
+<p>绘制一条从（100，100）到（200，200）再到（200，300）的折线。</p>
+<h3 id="线条属性"><a href="#线条属性" class="headerlink" title="线条属性"></a>线条属性</h3><ol>
+<li>lineWidth<br><code>context.lineWidth=10;</code><br>设置了直线宽度</li>
+<li>strokeStyle<br><code>context.strokeStyle=&quot;#058&quot;;</code><br>设置了直线颜色</li>
+<li>lineCap（线段两端样式）<br><code>context.lineCap=&quot;butt&quot;;</code>（只适用于线段的开始和结束）<ul>
+<li>butt(default) 默认</li>
+<li>round 圆角</li>
+<li>square 方角（可以产生和closePath一样的闭合效果)</li>
+</ul>
+</li>
+<li>lineJion(线段相交处样式)<ul>
+<li>miter(default) 尖角</li>
+<li>bevel 斜接</li>
+<li>round 圆角  </li>
+</ul>
+</li>
+</ol>
+<h3 id="canvas是基于状态绘图的"><a href="#canvas是基于状态绘图的" class="headerlink" title="canvas是基于状态绘图的"></a>canvas是基于状态绘图的</h3><h3 id="beginPath-方法"><a href="#beginPath-方法" class="headerlink" title="beginPath()方法"></a>beginPath()方法</h3><p><code>context.beginPath()</code> 用于全新绘制一段路径，如果一个属性值没有被改变，那么beginPath方法依然会保持这一个属性。</p>
+<h3 id="closePath-方法"><a href="#closePath-方法" class="headerlink" title="closePath()方法"></a>closePath()方法</h3><p><code>context.closePath()</code> 用于绘制一段闭合路径，可以解决线段宽度问题，并且可以省略一个lineTo函数。</p>
+<h3 id="fillStyle属性-fill-方法"><a href="#fillStyle属性-fill-方法" class="headerlink" title="fillStyle属性 fill()方法"></a>fillStyle属性 fill()方法</h3><ol>
+<li>简单用法<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">context.fillStyle&#x3D;&quot;yellow&quot;;</span><br><span class="line">context.fill();</span><br></pre></td></tr></table></figure>
+用于填充多边形的颜色。对调fill()和stroke()方法的顺序可以解决描边被覆盖的问题。</li>
+<li>渐变色用法</li>
+</ol>
+<ul>
+<li>Linear Gradient线性<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var skyStyle&#x3D;context.createLinearGradient(0,0,0,canvas.height);&#x2F;&#x2F;创建渐变线</span><br><span class="line">skyStyle.addColorStop(0.0,&quot;black&quot;);&#x2F;&#x2F;添加颜色关键值 浮点数代表颜色在渐变线的位置</span><br><span class="line">skyStyle.addColorStop(1.0,&quot;#305&quot;);&#x2F;&#x2F;添加颜色关键值</span><br><span class="line">context.fillStyle &#x3D; skyStyle;</span><br><span class="line">context.fillRect(0, 0, canvas.width, canvas.height);</span><br></pre></td></tr></table></figure></li>
+<li>Radial Gradient径向<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;创建 参数为第一个圆形的原点和半径 第二个圆的原点和半径</span><br><span class="line">var skyStyle&#x3D;context.createRadialGradient(x0,y0,r0,x1,y1,r1);</span><br><span class="line">skyStyle.addColorStop(0.0,&quot;black&quot;);&#x2F;&#x2F;添加颜色关键值 浮点数代表颜色在渐变线的位置</span><br><span class="line">skyStyle.addColorStop(1.0,&quot;#305&quot;);&#x2F;&#x2F;添加颜色关键值</span><br><span class="line">context.fillStyle &#x3D; skyStyle;</span><br><span class="line">context.fillRect(0, 0, canvas.width, canvas.height);</span><br></pre></td></tr></table></figure>
+<pre><code>- createPattern
+  <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> backgroundImage=<span class="keyword">new</span> Image();</span><br><span class="line">backgroundImage.src=<span class="string">"example,jpg"</span>;</span><br><span class="line">backgroundImage.onload=<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">  <span class="comment">//参数为no-repeat repeat repeat-x repeat-y  </span></span><br><span class="line">  <span class="comment">//backgroundImage还可以用canvas画布或vide</span></span><br><span class="line">  <span class="keyword">var</span> pattern=context.createPattern(backgroundImage,<span class="string">"no-repeat"</span>);</span><br><span class="line">  context.fillStyle=pattern;</span><br><span class="line">  context.fillRect(<span class="number">0</span>,<span class="number">0</span>,<span class="number">800</span>,<span class="number">800</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></code></pre>  同样fillStyle的特性也适用于strokeStyle上。  </li>
+</ul>
+<h3 id="绘制矩形"><a href="#绘制矩形" class="headerlink" title="绘制矩形"></a>绘制矩形</h3><ol>
+<li>rec(x,ywidth,height)函数 单纯绘制矩形</li>
+<li>fillRect(xy,width,height)函数 绘制矩形并且应用当前填充色</li>
+<li>strokeRect(x,y,width,height)函数 绘制矩形并且应用当前描边颜色</li>
+</ol>
+<h3 id="颜色的表示"><a href="#颜色的表示" class="headerlink" title="颜色的表示"></a>颜色的表示</h3><ol>
+<li>rgb(255,255,255) 数字分别对应红，绿，蓝</li>
+<li>rgba(255,255,255,0.8) 数字分别对应红，绿，蓝，透明度</li>
+</ol>
+<h3 id="圆形绘制"><a href="#圆形绘制" class="headerlink" title="圆形绘制"></a>圆形绘制</h3><p>arc(x,y, RADIUS, 0, p, bool)函数 <code>context.arc(100,100, 10, 0, 0, 2 * Math.PI, true);</code></p>
+<h3 id="图形变换"><a href="#图形变换" class="headerlink" title="图形变换"></a>图形变换</h3><p>综合考虑是否使用图形变换。</p>
+<ol>
+<li>位移 translate(x,y)<br>存在陷阱<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">var context&#x3D;canvas.getContext(&quot;2d&quot;);</span><br><span class="line">context.fillStyle&#x3D;&quot;red&quot;;</span><br><span class="line">context.translate(100,100);</span><br><span class="line">context.fillRect(0,0,400,400);</span><br><span class="line">context.fillStyle&#x3D;&quot;green&quot;;</span><br><span class="line">context.translate(300,300);</span><br><span class="line">context.fillRect(0,0,400,400);</span><br><span class="line"></span><br><span class="line">&#x2F;*你以为green方形移动到了（300,300）？其实不然，它实际上移动到了（400,400），因为translate是可叠加的。为此我们可以在绘图结束后再反向操作。*&#x2F;</span><br><span class="line">var context&#x3D;canvas.getContext(&quot;2d&quot;);</span><br><span class="line">context.fillStyle&#x3D;&quot;red&quot;;</span><br><span class="line">context.translate(100,100);</span><br><span class="line">context.fillRect(0,0,400,400);</span><br><span class="line">context.translate(-100,-100);&#x2F;&#x2F;</span><br><span class="line">context.fillStyle&#x3D;&quot;green&quot;;</span><br><span class="line">context.translate(300,300);</span><br><span class="line">context.fillRect(0,0,400,400);</span><br><span class="line">context.translate(-300,-300);&#x2F;&#x2F;</span><br><span class="line"></span><br><span class="line">&#x2F;*或者使用（**推荐使用**）*&#x2F;</span><br><span class="line">var context&#x3D;canvas.getContext(&quot;2d&quot;);</span><br><span class="line">context.save();&#x2F;&#x2F;</span><br><span class="line">context.fillStyle&#x3D;&quot;red&quot;;</span><br><span class="line">context.translate(100,100);</span><br><span class="line">context.fillRect(0,0,400,400);</span><br><span class="line">context.restore();&#x2F;&#x2F;</span><br><span class="line">context.save();&#x2F;&#x2F;</span><br><span class="line">context.fillStyle&#x3D;&quot;green&quot;;</span><br><span class="line">context.translate(300,300);</span><br><span class="line">context.fillRect(0,0,400,400);</span><br><span class="line">context.restore();&#x2F;&#x2F;</span><br></pre></td></tr></table></figure></li>
+<li>旋转 rotate(deg)</li>
+<li>缩放 scale(sx,sy)</li>
+</ol>
+<p><strong>注意</strong> scale不仅改变了大小还改变了初设的(x,y),lineWidth属性，可适当放弃一些效果来减小副作用或者自己设计方法解决。<br>4. transform(a,b,c,d,e,f)函数<br> 对应一个变换矩阵</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">|a c e|&#x3D; |1 0 0|  </span><br><span class="line">|b d f|&#x3D; |0 1 0|  </span><br><span class="line">|0 0 1|&#x3D; |0 0 1|</span><br></pre></td></tr></table></figure>
+<ul>
+<li>a水平缩放（1）</li>
+<li>b水平倾斜（0）</li>
+<li>c垂直倾斜（0）</li>
+<li>d垂直缩放（1）</li>
+<li>e水平位移（0）</li>
+<li>f垂直位移（0)<br>多次调用产生效果为叠加。</li>
+</ul>
+<ol start="5">
+<li>setTransform(a,b,c,d,e,f)函数<br>用于忽略掉之前的所有transform,重置为单位矩阵，再按照setTransform函数中的参数进行变换。<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">context.transform(1,0,0,1,50,100);</span><br><span class="line">context.transform(2,0,0,1.5,0,0);</span><br><span class="line">context.setTransform(1,0,0,1,100,100);</span><br></pre></td></tr></table></figure>
+最终保留setTransform的变换。</li>
+</ol>
+<h3 id="曲线绘制"><a href="#曲线绘制" class="headerlink" title="曲线绘制"></a>曲线绘制</h3><ol>
+<li>artTo(x0,y0,x1,y1,r)<br>终止于切点处</li>
+<li>Bezier</li>
+</ol>
+<ul>
+<li>quadraticCurveTo(x0,y0,x1,y1)<br>(x0,y0)为控制点， (x1,y1)为终点</li>
+<li>bezierCurveTO(x0,y0,x1,y1,x2,y2)<br>(x0,y0)， (x1,y1)为控制点， (x2,y2)为终点</li>
+</ul>
+<h3 id="文字"><a href="#文字" class="headerlink" title="文字"></a>文字</h3><h4 id="context-font属性"><a href="#context-font属性" class="headerlink" title="context.font属性"></a>context.font属性</h4><ol>
+<li>font-style<ul>
+<li>normal(default)</li>
+<li>italic(倾斜字)</li>
+<li>oblique（倾斜字体）</li>
+</ul>
+</li>
+<li>font-variant<ul>
+<li>normal(default)</li>
+<li>small-caps(英文小写字母变成小型大写字母)</li>
+</ul>
+</li>
+<li>font-weight<ul>
+<li>lighter(新)</li>
+<li>normal(default)</li>
+<li>bold</li>
+<li>bolder(新)</li>
+<li>100,200,300,400(normal),500,600,700(bold),800,900</li>
+</ul>
+</li>
+<li>font-size<ul>
+<li>px</li>
+<li>em</li>
+<li>%</li>
+</ul>
+</li>
+<li>font-family</li>
+</ol>
+<h3 id="图形关系"><a href="#图形关系" class="headerlink" title="图形关系"></a>图形关系</h3><ol>
+<li>globalAlpha</li>
+<li>globalCompositeOperation<ul>
+<li>source-over 后面图形遮盖前面</li>
+<li>source-atop</li>
+<li>source-in</li>
+<li>source-out</li>
+<li>destination-over 前面图形遮盖后面</li>
+<li>destination-atop</li>
+<li>destination-in</li>
+<li>destination-out</li>
+<li>lighter</li>
+<li>copy</li>
+<li>xor</li>
+</ul>
+</li>
+</ol>
+<h3 id="剪辑区域"><a href="#剪辑区域" class="headerlink" title="剪辑区域"></a>剪辑区域</h3><p>clip()剪切出一个区域用于绘制</p>
+<h3 id="点击判断"><a href="#点击判断" class="headerlink" title="点击判断"></a>点击判断</h3><p>isPointInPath(x,y)</p>
+<p>```</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/canvas/" rel="tag"># canvas</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/11/13/SassLearn/" rel="prev" title="sass学习笔记">
+      <i class="fa fa-chevron-left"></i> sass学习笔记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/02/16/aspen/" rel="next" title="aspen安装">
+      aspen安装 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let activeClass = CONFIG.comments.activeClass;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#canvas实例"><span class="nav-number">1.</span> <span class="nav-text">canvas实例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#canvas深入学习"><span class="nav-number">2.</span> <span class="nav-text">canvas深入学习</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#绘图环境获取"><span class="nav-number">2.1.</span> <span class="nav-text">绘图环境获取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#moveTo-x-y-函数"><span class="nav-number">2.2.</span> <span class="nav-text">moveTo(x,y)函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#lineTo-x-y-函数"><span class="nav-number">2.3.</span> <span class="nav-text">lineTo(x,y)函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#绘制折线"><span class="nav-number">2.4.</span> <span class="nav-text">绘制折线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线条属性"><span class="nav-number">2.5.</span> <span class="nav-text">线条属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#canvas是基于状态绘图的"><span class="nav-number">2.6.</span> <span class="nav-text">canvas是基于状态绘图的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#beginPath-方法"><span class="nav-number">2.7.</span> <span class="nav-text">beginPath()方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#closePath-方法"><span class="nav-number">2.8.</span> <span class="nav-text">closePath()方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#fillStyle属性-fill-方法"><span class="nav-number">2.9.</span> <span class="nav-text">fillStyle属性 fill()方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#绘制矩形"><span class="nav-number">2.10.</span> <span class="nav-text">绘制矩形</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#颜色的表示"><span class="nav-number">2.11.</span> <span class="nav-text">颜色的表示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#圆形绘制"><span class="nav-number">2.12.</span> <span class="nav-text">圆形绘制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图形变换"><span class="nav-number">2.13.</span> <span class="nav-text">图形变换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#曲线绘制"><span class="nav-number">2.14.</span> <span class="nav-text">曲线绘制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#文字"><span class="nav-number">2.15.</span> <span class="nav-text">文字</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#context-font属性"><span class="nav-number">2.15.1.</span> <span class="nav-text">context.font属性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#图形关系"><span class="nav-number">2.16.</span> <span class="nav-text">图形关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#剪辑区域"><span class="nav-number">2.17.</span> <span class="nav-text">剪辑区域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#点击判断"><span class="nav-number">2.18.</span> <span class="nav-text">点击判断</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="张烙铭"
+      src="/uploads/avatar.png">
+  <p class="site-author-name" itemprop="name">张烙铭</p>
+  <div class="site-description" itemprop="description">路漫漫其修远兮,吾将上下而求索。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/vtrust" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;vtrust" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/lpancake@qq.com" title="E-Mail → lpancake@qq.com"><i class="fa fa-fw fa-envelope"></i></a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/LPAN_cake?s=09" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;LPAN_cake?s&#x3D;09" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i></a>
+      </span>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 2016 – 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">张烙铭</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v4.2.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">主题 – <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.7.0
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el: '#valine-comments',
+      verify: false,
+      notify: false,
+      appId: 'yxrwBE6pliLgBz9uUhGF1JlI-gzGzoHsz',
+      appKey: 'JewSOlE8x7GOIyzOewTC8ETR',
+      placeholder: "Just go go",
+      avatar: 'mm',
+      meta: guest,
+      pageSize: '10' || 10,
+      visitor: false,
+      lang: '' || 'zh-cn',
+      path: location.pathname,
+      recordIP: false,
+      serverURLs: ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
